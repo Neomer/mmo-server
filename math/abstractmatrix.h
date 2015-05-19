@@ -1,12 +1,27 @@
 #ifndef ABSTRACTMATRIX_H
 #define ABSTRACTMATRIX_H
 
+/**************************
+ *
+ *  Класс для работы с матрицами
+ *
+ * ****************************
+ *
+ * Тесты:
+ * 19.05.15:
+ * Умножение матрицы 3х3 на число за 100 млн итерраций
+ * 1. Умножение на целое число за 2.5 сек.
+ * 2. Умножение на вещественное число за 2.5 сек.
+ *
+ *********************************************/
+
 #include <string.h>
 
 template < typename Type >
 class AbstractMatrix
 {
 public:
+    AbstractMatrix();
     AbstractMatrix(int r, int c);
     ~AbstractMatrix();
 
@@ -16,14 +31,14 @@ public:
      * @param value Значение на диагонали
      * @return
      */
-    static AbstractMatrix<Type> * createDiagonal(int d, Type value);
+    static AbstractMatrix<Type> createDiagonal(int d, Type value);
 
     /**
      * @brief createDiagonal Статический. Возвращает единичную матрицу.
      * @param d Размер матрицы
      * @return
      */
-    static AbstractMatrix<Type> * createIdentity(int d);
+    static AbstractMatrix<Type> createIdentity(int d);
 
     void set(int r, int c, Type value);
     Type get(int r, int c);
@@ -45,8 +60,22 @@ public:
      * @param matrix
      */
     void add(AbstractMatrix<Type> * matrix);
-    void add(float &value);
-    void add(int &value);
+    void add(float value);
+    void add(double value);
+    void add(long double value);
+    void add(int value);
+    void add(long long value);
+
+    /**
+     * @brief add Операция умножения
+     * @param matrix
+     */
+    void multi(AbstractMatrix<Type> * matrix);
+    void multi(float value);
+    void multi(double value);
+    void multi(long double value);
+    void multi(int value);
+    void multi(long long value);
 
     /**
      * @brief isSquare TRUE если матрица квадратная
@@ -59,6 +88,8 @@ public:
      * @brief transpose Транспонировать матрицу
      */
     void transpose();
+
+    void print();
 
 private:
     inline int getIndex(int r, int c);

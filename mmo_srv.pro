@@ -24,7 +24,8 @@ include(includes.pri)
 HEADERS += \
     core/memoryallocator.h \
     math/abstract2vector.h \
-    math/abstractmatrix.h
+    math/abstractmatrix.h \
+    math/main.h
 
 SOURCES += \
 	    core/memoryallocator.cpp
