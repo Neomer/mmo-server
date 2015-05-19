@@ -1,0 +1,4 @@
+Makefile.Release
+*.Release
+debug/main.o
+*.o
