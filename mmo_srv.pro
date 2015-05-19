@@ -19,17 +19,6 @@ SOURCES += main.cpp
 
 include(includes.pri)
 
-HEADERS += \
-    core/memoryallocator.h \
-    math/abstract2vector.h \
-    math/abstractmatrix.h \
-    math/main.h
 
-SOURCES += \
-	    core/memoryallocator.cpp
+SOURCES +=
 
-#HEADERS += math/*.h \
-#	    core/*.h
-
-INCLUDEPATH += math \
-		core

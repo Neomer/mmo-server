@@ -256,33 +256,33 @@ public:
 
     void operator += (Type v)
     {
-        return this->add(v);
+        this->add(v);
     }
 
     void operator += (AbstractMatrix<Type> v)
     {
-        return this->add(&v);
+        this->add(&v);
     }
 
     void operator += (AbstractMatrix<Type> * v)
     {
-        return this->add(v);
+        this->add(v);
     }
 
 
     void operator *= (Type v)
     {
-        return this->multi(v);
+        this->multi(v);
     }
 
     void operator *= (AbstractMatrix<Type> v)
     {
-        return this->multi(&v);
+        this->multi(&v);
     }
 
     void operator *= (AbstractMatrix<Type> * v)
     {
-        return this->multi(v);
+        this->multi(v);
     }
 
 
