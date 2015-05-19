@@ -33,12 +33,12 @@ public:
 
     inline Type x()
     {
-        this->get(0, 0);
+        return this->get(0, 0);
     }
 
     inline Type y()
     {
-        this->get(0, 1);
+        return this->get(0, 1);
     }
 
     /**

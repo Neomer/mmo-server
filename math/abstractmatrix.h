@@ -18,6 +18,9 @@
 #include <string.h>
 #include <stdio.h>
 #include "math/main.h"
+#include <stdlib.h>
+#include <typeinfo>
+#include <QString>
 
 namespace MMO_SERVER
 {
@@ -25,8 +28,6 @@ namespace MMO_SERVER
 template < typename Type >
 class AbstractMatrix
 {
-    friend class AbstractMatrix;
-
 public:
 
     AbstractMatrix()
@@ -253,11 +254,13 @@ public:
      */
     void print()
     {
+        QString fmt("%");
+        fmt.append(typeid(Type).name()).append(" ");
         for (int r = 0; r < this->numRows(); r++)
         {
             for (int c = 0; c < this->numColumns(); c++)
             {
-                printf("%f ", this->get(r, c));
+                printf(fmt.toLatin1().constData(), this->get(r, c));
             }
             printf("\n");
         }
@@ -299,6 +302,14 @@ public:
         this->multi(v);
     }
 
+    void operator = (AbstractMatrix<Type> &v)
+    {
+        memcpy(this->__v, v.__v, v.numElements() * sizeof(Type));
+        this->__r = v.__r;
+        this->__c = v.__c;
+        this->__count = v.__count;
+        this->__t = v.__t;
+    }
 
 private:
     inline int getIndex(int r, int c)

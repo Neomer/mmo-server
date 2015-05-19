@@ -88,17 +88,17 @@ public:
 
     inline Type x()
     {
-        this->get(0, 0);
+        return this->get(0, 0);
     }
 
     inline Type y()
     {
-        this->get(0, 1);
+        return this->get(0, 1);
     }
 
     inline Type z()
     {
-        this->get(0, 2);
+        return this->get(0, 2);
     }
 
     /**
@@ -177,6 +177,9 @@ private:
     // Флаг динамического пересчета параметров вектора
     bool __recalc;
 };
+
+typedef Abstract3Vector<float>      Vector3f;
+typedef Abstract3Vector<int>        Vector3i;
 
 }
 #endif // ABSTRACT3VECTOR_H
