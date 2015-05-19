@@ -15,9 +15,7 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    math/abstract2vector.cpp \
-    math/abstractmatrix.cpp
+SOURCES += main.cpp
 
 include(includes.pri)
 

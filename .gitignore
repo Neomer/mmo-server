@@ -1,5 +1,6 @@
-Makefile.Release
+*.Debug
 *.Release
-debug/main.o
+debug/
+release/
 *.o
 *.user
