@@ -1,7 +1,7 @@
 Makefile.Debug
 Makefile.Release
 Makefile
-debug/
-release/
+/debug/
+/release/
 *.o
 *.user
