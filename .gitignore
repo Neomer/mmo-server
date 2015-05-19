@@ -4,4 +4,4 @@ Makefile
 /debug/
 /release/
 *.o
-*.user
+*.user.*

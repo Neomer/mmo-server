@@ -62,7 +62,7 @@ public:
     }
 
     /**
-     * @brief createDiagonal Статический. Возвращает диагональную матрицу.
+     * @brief Статический. Возвращает диагональную матрицу.
      * @param d Размер матрицы
      * @param value Значение на диагонали
      * @return
@@ -79,7 +79,7 @@ public:
     }
 
     /**
-     * @brief createDiagonal Статический. Возвращает единичную матрицу.
+     * @brief Статический. Возвращает единичную матрицу.
      * @param d Размер матрицы
      * @return
      */
@@ -111,7 +111,7 @@ public:
     }
 
     /**
-     * @brief numColumns Количество столбцов
+     * @brief Количество столбцов
      * @return
      */
     inline int numColumns()
@@ -120,7 +120,7 @@ public:
     }
 
     /**
-     * @brief numRows Количество строк
+     * @brief Количество строк
      * @return
      */
     inline int numRows()
@@ -129,7 +129,7 @@ public:
     }
 
     /**
-     * @brief numRows Количество элементов матрицы
+     * @brief Количество элементов матрицы
      * @return
      */
     inline int numElements()
@@ -138,7 +138,7 @@ public:
     }
 
     /**
-     * @brief add Операция сложения
+     * @brief Операция сложения матриц
      * @param matrix
      */
     void add(AbstractMatrix<Type> * matrix)
@@ -155,6 +155,10 @@ public:
         }
     }
 
+    /**
+     * @brief Операция сложения с числом
+     * @param matrix
+     */
     void add(Type value)
     {
         for (int i = 0; i < this->__count; i++)
@@ -164,7 +168,7 @@ public:
     }
 
     /**
-     * @brief add Операция умножения
+     * @brief Операция умножения мариц
      * @param matrix
      */
     AbstractMatrix<Type> multi(AbstractMatrix<Type> * matrix)
@@ -190,6 +194,10 @@ public:
         return m;
     }
 
+    /**
+     * @brief Операция умножения с числом
+     * @param matrix
+     */
     void multi(Type value)
     {
         for (int i = 0; i < this->__count; i++)
@@ -199,7 +207,7 @@ public:
     }
 
     /**
-     * @brief isSquare TRUE если матрица квадратная
+     * @brief TRUE если матрица квадратная
      * @return
      */
     bool isSquare()
@@ -208,7 +216,7 @@ public:
     }
 
     /**
-     * @brief isSquare TRUE если матрица matrix равна текущей
+     * @brief TRUE если матрица matrix равна текущей
      * @return
      */
     bool isEqual(AbstractMatrix<Type> * matrix)
@@ -230,13 +238,16 @@ public:
 
     /* Преобразования матрицы */
     /**
-     * @brief transpose Транспонировать матрицу
+     * @brief Транспонировать матрицу
      */
     void transpose()
     {
         this->__t = !this->__t;
     }
 
+    /**
+     * @brief Распечатывает значения матрицы
+     */
     void print()
     {
         for (int r = 0; r < this->numRows(); r++)
