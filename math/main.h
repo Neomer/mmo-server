@@ -1,6 +1,9 @@
 #ifndef MAIN
 #define MAIN
 
+namespace MMO_SERVER
+{
+
 namespace __MATH
 {
     #define _PI         3.1415926535897932384626433832795
@@ -50,5 +53,6 @@ namespace __MATH
     }
 }
 
+}
 #endif // MAIN
 

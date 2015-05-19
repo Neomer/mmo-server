@@ -20,5 +20,5 @@ SOURCES += main.cpp
 include(includes.pri)
 
 
-SOURCES +=
+
 

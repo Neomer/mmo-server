@@ -19,6 +19,9 @@
 #include <stdio.h>
 #include "math/main.h"
 
+namespace MMO_SERVER
+{
+
 template < typename Type >
 class AbstractMatrix
 {
@@ -254,7 +257,7 @@ public:
         {
             for (int c = 0; c < this->numColumns(); c++)
             {
-                printf("%d ", this->get(r, c));
+                printf("%f ", this->get(r, c));
             }
             printf("\n");
         }
@@ -315,4 +318,5 @@ private:
     bool __t;
 };
 
+}
 #endif // ABSTRACTMATRIX_H

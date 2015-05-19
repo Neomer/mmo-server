@@ -4,6 +4,9 @@
 #include "abstractmatrix.h"
 #include <qmath.h>
 
+namespace MMO_SERVER
+{
+
 template < typename Type >
 class Abstract3Vector : public AbstractMatrix<Type>
 {
@@ -30,6 +33,22 @@ public:
         AbstractMatrix<Type>(1, 3, value)
     {
         this->__recalc = recalculate;
+        if (this->__recalc) this->updateLength();
+    }
+
+    /**
+     * @brief Abstract3Vector
+     * @param x
+     * @param y
+     * @param z
+     * @param recalculate TRUE если нужно пересчитывать параметры вектора автоматически.
+     * Выгодно если, координаты не меняются реже, чем используются параметры, аткие как длина
+     */
+    Abstract3Vector(Type x, Type y, Type z, bool recalculate = false) :
+        AbstractMatrix<Type>(1, 3)
+    {
+        this->__recalc = recalculate;
+        setXYZ(x, y, z);
         if (this->__recalc) this->updateLength();
     }
 
@@ -159,4 +178,5 @@ private:
     bool __recalc;
 };
 
+}
 #endif // ABSTRACT3VECTOR_H

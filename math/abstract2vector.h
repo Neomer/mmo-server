@@ -3,6 +3,9 @@
 
 #include "abstractmatrix.h"
 
+namespace MMO_SERVER
+{
+
 template < typename Type >
 class Abstract2Vector : public AbstractMatrix<Type>
 {
@@ -60,4 +63,5 @@ private:
     }
 };
 
+}
 #endif // ABSTRACTVECTOR_H
