@@ -12,7 +12,7 @@
  * Умножение матрицы 3х3 на число за 100 млн итерраций
  * 1. Умножение на целое число за 2.5 сек.
  * 2. Умножение на вещественное число за 2.5 сек.
- *
+ * 3. Умножение на матрицу (1 млн) 1.25 сек
  *********************************************/
 
 #include <string.h>
@@ -20,9 +20,12 @@
 template < typename Type >
 class AbstractMatrix
 {
+    friend class AbstractMatrix;
+
 public:
     AbstractMatrix();
     AbstractMatrix(int r, int c);
+    AbstractMatrix(int r, int c, Type * data);
     ~AbstractMatrix();
 
     /**
@@ -56,32 +59,36 @@ public:
     inline int numRows();
 
     /**
+     * @brief numRows Количество элементов матрицы
+     * @return
+     */
+    inline int numElements();
+
+    /**
      * @brief add Операция сложения
      * @param matrix
      */
     void add(AbstractMatrix<Type> * matrix);
-    void add(float value);
-    void add(double value);
-    void add(long double value);
-    void add(int value);
-    void add(long long value);
+    void add(Type value);
 
     /**
      * @brief add Операция умножения
      * @param matrix
      */
-    void multi(AbstractMatrix<Type> * matrix);
-    void multi(float value);
-    void multi(double value);
-    void multi(long double value);
-    void multi(int value);
-    void multi(long long value);
+    AbstractMatrix<Type> multi(AbstractMatrix<Type> * matrix);
+    void multi(Type value);
 
     /**
      * @brief isSquare TRUE если матрица квадратная
      * @return
      */
     bool isSquare();
+
+    /**
+     * @brief isSquare TRUE если матрица matrix равна текущей
+     * @return
+     */
+    bool isEqual(AbstractMatrix<Type> * matrix);
 
     /* Преобразования матрицы */
     /**
@@ -90,6 +97,15 @@ public:
     void transpose();
 
     void print();
+
+    bool operator == (AbstractMatrix<Type> &m);
+    void operator += (Type v);
+    void operator += (AbstractMatrix<Type> v);
+    void operator += (AbstractMatrix<Type> * v);
+
+    void operator *= (Type v);
+    void operator *= (AbstractMatrix<Type> v);
+    void operator *= (AbstractMatrix<Type> * v);
 
 private:
     inline int getIndex(int r, int c);

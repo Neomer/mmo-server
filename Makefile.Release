@@ -54,7 +54,8 @@ OBJECTS       = release/main.o \
 
 DIST          =  core\memoryallocator.h \
 		math\abstract2vector.h \
-		math\abstractmatrix.h main.cpp \
+		math\abstractmatrix.h \
+		math\main.h main.cpp \
 		math\abstract2vector.cpp \
 		math\abstractmatrix.cpp \
 		core\memoryallocator.cpp
@@ -180,13 +181,15 @@ release/main.o: main.cpp ../../Qt/5.4/mingw491_32/include/QtCore/QCoreApplicatio
 		../../Qt/5.4/mingw491_32/include/QtCore/qisenum.h \
 		../../Qt/5.4/mingw491_32/include/QtCore/qobject_impl.h \
 		../../Qt/5.4/mingw491_32/include/QtCore/qeventloop.h \
-		math/abstractmatrix.h
+		math/abstractmatrix.h \
+		math/main.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o main.cpp
 
 release/abstract2vector.o: math/abstract2vector.cpp math/abstract2vector.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\abstract2vector.o math\abstract2vector.cpp
 
-release/abstractmatrix.o: math/abstractmatrix.cpp math/abstractmatrix.h
+release/abstractmatrix.o: math/abstractmatrix.cpp math/abstractmatrix.h \
+		math/main.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\abstractmatrix.o math\abstractmatrix.cpp
 
 release/memoryallocator.o: core/memoryallocator.cpp core/memoryallocator.h \

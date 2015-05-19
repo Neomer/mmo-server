@@ -25,6 +25,18 @@ AbstractMatrix<Type>::AbstractMatrix(int r, int c)
 }
 
 template<typename Type>
+AbstractMatrix<Type>::AbstractMatrix(int r, int c, Type *data)
+{
+    this->__count = r * c;
+    __v = new Type[ this->__count ];
+    this->__r = r;
+    this->__c = c;
+    this->__t = false;
+
+    memcpy(__v, data, __count * sizeof(Type));
+}
+
+template<typename Type>
 AbstractMatrix<Type>::~AbstractMatrix()
 {
     delete [] __v;
@@ -85,6 +97,12 @@ int AbstractMatrix<Type>::numRows()
 }
 
 template<typename Type>
+int AbstractMatrix<Type>::numElements()
+{
+    return this->__count;
+}
+
+template<typename Type>
 void AbstractMatrix<Type>::add(AbstractMatrix<Type> *matrix)
 {
     if ((this->__r != matrix->numRows())||(this->__c != matrix->numColumns()))
@@ -100,7 +118,7 @@ void AbstractMatrix<Type>::add(AbstractMatrix<Type> *matrix)
 }
 
 template<typename Type>
-void AbstractMatrix<Type>::add(float value)
+void AbstractMatrix<Type>::add(Type value)
 {
     for (int i = 0; i < this->__count; i++)
     {
@@ -109,85 +127,31 @@ void AbstractMatrix<Type>::add(float value)
 }
 
 template<typename Type>
-void AbstractMatrix<Type>::add(double value)
+AbstractMatrix<Type> AbstractMatrix<Type>::multi(AbstractMatrix<Type> *matrix)
 {
-    for (int i = 0; i < this->__count; i++)
+    AbstractMatrix<Type> m(this->numRows(), matrix->numColumns());
+
+    if ((this->numColumns() != matrix->numRows()))
+        return m;
+
+    for (int c = 0; c < this->numColumns(); c++)
     {
-        this->__v[i] = this->__v[i] + value;
+        for (int r = 0; r < this->numRows(); r++)
+        {
+            Type z = 0;
+            for (int c1 = 0; c1 < this->numColumns(); c1++)
+            {
+                z += this->get(r, c1) * matrix->get(c1, c);
+            }
+            m.set(r, c, z);
+        }
     }
+
+    return m;
 }
 
 template<typename Type>
-void AbstractMatrix<Type>::add(long double value)
-{
-    for (int i = 0; i < this->__count; i++)
-    {
-        this->__v[i] = this->__v[i] + value;
-    }
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::add(int value)
-{
-    for (int i = 0; i < this->__count; i++)
-    {
-        this->__v[i] = this->__v[i] + value;
-    }
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::add(long long value)
-{
-    for (int i = 0; i < this->__count; i++)
-    {
-        this->__v[i] = this->__v[i] + value;
-    }
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::multi(AbstractMatrix<Type> *matrix)
-{
-
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::multi(float value)
-{
-    for (int i = 0; i < this->__count; i++)
-    {
-        this->__v[i] = this->__v[i] * value;
-    }
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::multi(double value)
-{
-    for (int i = 0; i < this->__count; i++)
-    {
-        this->__v[i] = this->__v[i] * value;
-    }
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::multi(long double value)
-{
-    for (int i = 0; i < this->__count; i++)
-    {
-        this->__v[i] = this->__v[i] * value;
-    }
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::multi(int value)
-{
-    for (int i = 0; i < this->__count; i++)
-    {
-        this->__v[i] = this->__v[i] * value;
-    }
-}
-
-template<typename Type>
-void AbstractMatrix<Type>::multi(long long value)
+void AbstractMatrix<Type>::multi(Type value)
 {
     for (int i = 0; i < this->__count; i++)
     {
@@ -199,6 +163,24 @@ template<typename Type>
 bool AbstractMatrix<Type>::isSquare()
 {
     return this->__r == this->__c;
+}
+
+template<typename Type>
+bool AbstractMatrix<Type>::isEqual(AbstractMatrix<Type> *matrix)
+{
+    if ((this->numRows() != matrix->numRows())||(this->numColumns() != matrix->numColumns()))
+        return false;
+
+    for (int r = 0; r < this->numRows(); r++ )
+    {
+        for (int c = 0; c < this->numColumns(); c++ )
+        {
+            if (this->get(r, c) != matrix->get(r, c))
+                return false;
+        }
+    }
+
+    return true;
 }
 
 template<typename Type>
@@ -218,6 +200,60 @@ void AbstractMatrix<Type>::print()
         }
         printf("\n");
     }
+}
+
+template<typename Type>
+bool AbstractMatrix<Type>::operator ==(AbstractMatrix<Type> &m)
+{
+    if ((m.numRows() != this->numRows())||(m.numColumns() != this->numColumns()))
+        return false;
+
+    for (int r = 0; r < m.numRows(); r++ )
+    {
+        for (int c = 0; c < m.numColumns(); c++ )
+        {
+            if (m.get(r, c) != this->get(r, c))
+                return false;
+        }
+    }
+
+    return true;
+}
+
+template<typename Type>
+void AbstractMatrix<Type>::operator +=(Type v)
+{
+    this->add(v);
+}
+
+template<typename Type>
+void AbstractMatrix<Type>::operator +=(AbstractMatrix<Type> *v)
+{
+    this->add(v);
+}
+
+template<typename Type>
+void AbstractMatrix<Type>::operator *=(Type v)
+{
+    this->multi(v);
+}
+
+template<typename Type>
+void AbstractMatrix<Type>::operator *=(AbstractMatrix<Type> v)
+{
+    this->multi(&v);
+}
+
+template<typename Type>
+void AbstractMatrix<Type>::operator *=(AbstractMatrix<Type> *v)
+{
+    this->multi(v);
+}
+
+template<typename Type>
+void AbstractMatrix<Type>::operator +=(AbstractMatrix<Type> v)
+{
+    this->add(&v);
 }
 
 template<typename Type>
