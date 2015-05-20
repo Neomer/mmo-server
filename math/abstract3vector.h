@@ -11,6 +11,21 @@ template < typename Type >
 class Abstract3Vector : public AbstractMatrix<Type>
 {
 public:
+    Abstract3Vector(const AbstractMatrix<Type> &matrix, bool recalculate = false) :
+        AbstractMatrix<Type>(matrix)
+    {
+        this->__recalc = recalculate;
+        if (recalculate) this->updateLength();
+    }
+
+    Abstract3Vector(const Abstract3Vector<Type> &other) :
+        AbstractMatrix<Type>(other)
+    {
+        this->__recalc = other.__recalc;
+        this->__l = other.__l;
+        this->__l2 = other.__l2;
+    }
+
     /**
      * @brief
      * @param recalculate TRUE если нужно пересчитывать параметры вектора автоматически.
@@ -49,6 +64,21 @@ public:
     {
         this->__recalc = recalculate;
         setXYZ(x, y, z);
+        if (this->__recalc) this->updateLength();
+    }
+
+    /**
+     * @brief Создает сонаправленный вектор указанной длины
+     * @param directionTo базовый вектор
+     * @param length Необходимая длина
+     * @param recalculate
+     */
+    Abstract3Vector(Abstract3Vector<Type> directionTo, float length, bool recalculate = false) :
+        AbstractMatrix<Type>(1, 3)
+    {
+        this->__recalc = recalculate;
+        float delta = length / directionTo.length();
+        this->setXYZ(directionTo.x() * delta, directionTo.y() * delta, directionTo.z() * delta);
         if (this->__recalc) this->updateLength();
     }
 
@@ -108,7 +138,7 @@ public:
      */
     float distanceTo(Abstract3Vector<Type> *v)
     {
-        return qSqrt(this->x() * v->x() + this->y() * v->y() + this->z() * v->z() );
+        return qSqrt(qAbs(this->x() * v->x() + this->y() * v->y() + this->z() * v->z()));
     }
 
     /**
@@ -118,7 +148,7 @@ public:
      */
     float distanceToSq(Abstract3Vector<Type> *v)
     {
-        return this->x() * v->x() + this->y() * v->y() + this->z() * v->z();
+        return qAbs(this->x() * v->x() + this->y() * v->y() + this->z() * v->z());
     }
 
     /**
@@ -153,6 +183,36 @@ public:
     float angleTo(Abstract3Vector<Type> *v)
     {
         return qAcos(this->distanceToSq(v) / (this->length() * v->length()));
+    }
+
+    /**
+     * @brief Изменяет длину вектора не меняя направление
+     * @param length Новая длина
+     */
+    void setLength(float length)
+    {
+        float delta;
+        if (this->__recalc)
+            delta = length / this->__l;
+        else
+            delta = length / this->length();
+        setXYZ(this->x() * delta, this->y() * delta, this->z() * delta);
+        if (this->__recalc) this->updateLength();
+    }
+
+    Abstract3Vector<Type> operator * (Type value)
+    {
+        return Abstract3Vector<Type>(AbstractMatrix<Type>::operator *(value));
+    }
+
+    void operator = (const AbstractMatrix<Type> &v)
+    {
+        this->copy(v);
+    }
+
+    void setRecalculate(bool v)
+    {
+        this->__recalc = v;
     }
 
 private:

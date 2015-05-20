@@ -29,6 +29,15 @@ template < typename Type >
 class AbstractMatrix
 {
 public:
+    AbstractMatrix(const AbstractMatrix<Type> &other)
+    {
+        this->__count = other.__count;
+        this->__r = other.__r;
+        this->__c = other.__c;
+        this->__t = false;
+        this->__v = new Type[this->__count];
+        memcpy(this->__v, other.__v, this->__count * sizeof(Type));
+    }
 
     AbstractMatrix()
     {
@@ -98,6 +107,12 @@ public:
         return m;
     }
 
+    /**
+     * @brief Устанавливет значение по координатам (R,C)
+     * @param r Индекс строки
+     * @param c Индекс столбца
+     * @param value Значение
+     */
     void set(int r, int c, Type value)
     {
         if ((!__MATH::between<int>(-1, __r, r, false)) || (!__MATH::between<int>(-1, __c, c, false)))
@@ -106,6 +121,12 @@ public:
         this->__v[this->getIndex(r, c)] = value;
     }
 
+    /**
+     * @brief Получает значение по координатам (R,C)
+     * @param r Индекс строки
+     * @param c Индекс столбца
+     * @return
+     */
     Type get(int r, int c)
     {
         if ((!__MATH::between<int>(-1, __r, r, false)) || (!__MATH::between<int>(-1, __c, c, false)))
@@ -302,13 +323,50 @@ public:
         this->multi(v);
     }
 
-    void operator = (AbstractMatrix<Type> &v)
+    void operator = (AbstractMatrix<Type> v)
     {
         memcpy(this->__v, v.__v, v.numElements() * sizeof(Type));
         this->__r = v.__r;
         this->__c = v.__c;
         this->__count = v.__count;
         this->__t = v.__t;
+    }
+
+    AbstractMatrix<Type> copy()
+    {
+        AbstractMatrix<Type> ret(this->numRows(), this->numColumns(), this->__v);
+        return ret;
+    }
+
+    void copy(const AbstractMatrix<Type> &other)
+    {
+        this->__count = other.__count;
+        this->__r = other.__r;
+        this->__c = other.__c;
+        this->__t = false;
+        this->__v = new Type[this->__count];
+        memcpy(this->__v, other.__v, this->__count * sizeof(Type));
+    }
+
+    AbstractMatrix<Type> operator * (float v)
+    {
+        AbstractMatrix<Type> m2 = this->copy();
+        m2.multi(v);
+        return m2;
+    }
+
+    AbstractMatrix<Type> operator + (Type v)
+    {
+        AbstractMatrix<Type> m2 = this->copy();
+        m2.add(v);
+        return m2;
+    }
+
+    AbstractMatrix<Type> operator + (AbstractMatrix<Type> v)
+    {
+        AbstractMatrix<Type> m2 = this->copy();
+        m2.add(&v);
+        return m2;
     }
 
 private:

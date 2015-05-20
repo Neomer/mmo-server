@@ -15,10 +15,14 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     qint64 t = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
-    Physics::SphereCollision c(Vector3f(0, 0, 0), 5),
-            c1(Vector3f(6, 0, 0), 3);
+    Physics::SphereCollision c(Vector3f(4.5f, 4.0f, 0.0f), 5),
+            c1(Vector3f(6.0f, 0.0f, 0.0f), 3);
 
-    qDebug("%d", c.checkCollision(&c1));
+    Physics::CollisionSolver cs = c.checkCollision(&c1);
+    qDebug("%d", cs.incident);
+    cs.normal.print();
+    qDebug("%f", cs.normal.length());
+
 
     qDebug("\nTime elapsed: %s", QDateTime::fromMSecsSinceEpoch(QDateTime::currentDateTime().toMSecsSinceEpoch() - t).toString("mm:ss.zzz").toLatin1().constData());
     return a.exec();

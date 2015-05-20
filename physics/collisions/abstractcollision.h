@@ -17,6 +17,12 @@ enum CollisionType
     CT_Capsule
 };
 
+struct CollisionSolver
+{
+    Vector3f normal;
+    bool incident;
+};
+
 class AbstractCollision
 {
 public:
@@ -25,7 +31,8 @@ public:
         __type = type;
     }
 
-    virtual bool checkCollision(AbstractCollision * collision) = 0;
+    virtual CollisionSolver checkCollision(AbstractCollision * collision) = 0;
+    //virtual bool resolveCollision(AbstractCollision * collision) = 0;
 
     CollisionType type()
     {
