@@ -138,7 +138,7 @@ public:
      */
     float distanceTo(Abstract3Vector<Type> *v)
     {
-        return qSqrt(qAbs(this->x() * v->x() + this->y() * v->y() + this->z() * v->z()));
+        return qSqrt(this->distanceToSq(v));
     }
 
     /**
@@ -148,7 +148,9 @@ public:
      */
     float distanceToSq(Abstract3Vector<Type> *v)
     {
-        return qAbs(this->x() * v->x() + this->y() * v->y() + this->z() * v->z());
+        return qAbs((this->x() - v->x()) * (this->x() - v->x()) +
+                    (this->y() - v->y()) * (this->y() - v->y()) +
+                    (this->z() * v->z()) * (this->z() * v->z()));
     }
 
     /**

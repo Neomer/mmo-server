@@ -1,6 +1,14 @@
 #ifndef SPHERECOLLISION
 #define SPHERECOLLISION
 
+/**************************
+ *
+ *  Класс для работы с матрицами
+ *
+ * ****************************
+ *
+ *********************************************/
+
 #include "abstractcollision.h"
 
 namespace MMO_SERVER
@@ -12,11 +20,19 @@ namespace Physics
 class SphereCollision : public AbstractCollision
 {
 public:
+    SphereCollision() :
+        AbstractCollision(CT_Sphere)
+    {
+        this->__c.setRecalculate(true);
+        this->__r = 0;
+        this->__r2 = 0;
+    }
+
     SphereCollision(Vector3f center, float radius) :
         AbstractCollision(CT_Sphere)
     {
-        this->__c.setRecalculate(false);
         this->__c = center;
+        this->__c.setRecalculate(true);
         this->__r = radius;
         this->__r2 = radius * radius;
     }
@@ -62,24 +78,51 @@ private:
     float __r, __r2;
     Vector3f __c;
 
+    /***********************************************
+    * Тесты:
+    * 21.05.15:
+    * Сравнение 2ух алгоритмов через Sqrt и через квадраты (5 млн итерраций)
+    * 1. 2,105 - 2,107
+    * 2. 1,976 - 1,986
+    *
+    *
+    * ******************************************/
     CollisionSolver sphereToSphereCheck(SphereCollision * c)
     {
         CollisionSolver ret;
 
-        Vector3f n1(this->center() * -1.0f + c->center()), n2 = n1, n;
 
-        n1.setLength(this->radius());
-        n1.print();
-        n2.setLength(c->radius() * -1);
-        n2.print();
-        if (this->center().distanceTo(&(c->center())) <= this->radius() + c->radius())
+        float dsq = this->center().distanceToSq(&(c->center())),
+                rs = this->radius() + c->radius();
+
+        if (dsq < (rs) * (rs))
         {
             ret.incident = true;
-            n = n2 + n1;
-            //n.setLength(n);
+            Vector3f n = (c->center() * -1) + this->center();
+            n.setLength(rs - qSqrt(dsq));
             ret.normal = n;
         }
+        else
+        {
+            ret.incident = false;
+        }
 
+
+        /*
+        float dsq = this->center().distanceTo(&(c->center()));
+
+        if (dsq < this->radius() + c->radius())
+        {
+            ret.incident = true;
+            Vector3f n = (c->center() * -1) + this->center();
+            n.setLength(this->radius() + c->radius() - dsq);
+            ret.normal = n;
+        }
+        else
+        {
+            ret.incident = false;
+        }
+        */
         return ret;
     }
 };
