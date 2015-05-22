@@ -7,6 +7,7 @@
 #include "core/sceneobject.h"
 #include "physics/collisions/spherecollision.h"
 #include "physics/world.h"
+#include "network/netserver.h"
 #include <QList>
 
 using namespace MMO_SERVER;
@@ -24,10 +25,14 @@ int main(int argc, char *argv[])
 
     Physics::World w(Vector3f(0.01f, 0.01f, 0.01f));
     Physics::DynamicObject dyn(&so);
+    
+    Network::NetServer srv;
+    w.startSimulation();
 
+    srv.listen(QHostAddress::Any, 5479);
+    
     w.addDynamicObject(&dyn);
     
-    w.startSimulation();
 
     qint64 t = QDateTime::currentDateTime().toMSecsSinceEpoch();
 

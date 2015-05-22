@@ -45,7 +45,9 @@ public:
         
         a.setXYZ(a.x() * this->__ws.x(), a.y() * this->__ws.y(), a.z() * this->__ws.z());
         
-        this->__ob->location() += a;
+        this->__a += a;
+        
+        this->__ob->location() += this->__a;
     }
 
 private:
